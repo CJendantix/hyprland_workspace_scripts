@@ -1,4 +1,4 @@
-# hyprland_workspace_scripts
+# CJ's Hyprland workspace scripts
 Scripts to make Hyprland workspaces a little more usable with multiple monitors
 
 
