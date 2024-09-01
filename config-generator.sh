@@ -27,7 +27,8 @@ findSuffix () {
 }
 
 read -rp "How many monitors do you have? " TOTALMONITORS;
-read -rp "How many workspaces per monitor do you want " WORKSPACESPERMONITOR;
+read -rp "How many workspaces per monitor do you want? " WORKSPACESPERMONITOR;
+read -rp "How many workspaces do you want to be persistent per monitor? " PERSISTENTWORKSPACES;
 MONITORNAMES=()
 
 if [ "$WORKSPACESPERMONITOR" -gt 9 ]; then
@@ -53,10 +54,14 @@ echo ""
 for x in $(seq 0 "$(( TOTALMONITORS - 1 ))"); do
 	for y in $(seq "$WORKSPACESPERMONITOR"); do
 		default="false"
+		persistent="false"
 		if [ "$y" == 1 ]; then
 			default="true";
 		fi
-		echo "workspace = $(( y + x * WORKSPACESPERMONITOR )),monitor:${MONITORNAMES[$x]},default:${default}";
+		if [ "$y" -le "$PERSISTENTWORKSPACES" ]; then
+			persistent="true"
+		fi
+		echo "workspace = $(( y + x * WORKSPACESPERMONITOR )),monitor:${MONITORNAMES[$x]},default:${default},persistent:${persistent}";
 	done
 	echo ""
 done
