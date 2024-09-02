@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Scripted input goes as follows:
+# /path/to/config-generator.sh TOTALMONITORS WORKSPACESPERMONITOR PERSISTENTWORKSPACES MONITOR1,MONITOR2,MONITOR3
+
 findSuffix () {
 	INPUT="$1";
 	OUTPUT="";
@@ -36,19 +39,24 @@ if [ ! "$1" ]; then
 		echo "Cannot create more than nine workspaces per monitor";
 		exit;
 	fi
+
+	if [ "$PERSISTENTWORKSPACES" -gt "$WORKSPACESPERMONITOR" ]; then
+		PERSISTENTWORKSPACES="$WORKSPACESPERMONITOR"
+	fi
 	
 	for i in $(seq "$TOTALMONITORS"); do
 		suffix=$(findSuffix "${i}");
 		read -rp "What is the name of the ${i}${suffix} monitor? " x;
 		MONITORNAMES+=("$x");
 	done
+	echo ""
 else
 	TOTALMONITORS="$1"
 	WORKSPACESPERMONITOR="$2"
 	PERSISTENTWORKSPACES="$3"
 	IFS=, command eval 'MONITORNAMES=($4)'
 fi
-echo ""
+
 for x in $(seq "$WORKSPACESPERMONITOR"); do
 		echo "bind = SUPER, ${x}, exec, ~/.local/share/scripts/hyprland_workspace_scripts/workspaces.sh ${x} ${WORKSPACESPERMONITOR}";
 done
