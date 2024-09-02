@@ -29,7 +29,7 @@ findSuffix () {
 if [ ! "$1" ]; then
 	read -rp "How many monitors do you have? " TOTALMONITORS;
 	read -rp "How many workspaces per monitor do you want? " WORKSPACESPERMONITOR;
-	read -rp "How many workspaces do you want to be persistant per monitor? " PERSISTANTWORKSPACES;
+	read -rp "How many workspaces do you want to be persistent per monitor? " PERSISTENTWORKSPACES;
 	MONITORNAMES=()
 	
 	if [ "$WORKSPACESPERMONITOR" -gt 9 ]; then
@@ -45,8 +45,8 @@ if [ ! "$1" ]; then
 else
 	TOTALMONITORS="$1"
 	WORKSPACESPERMONITOR="$2"
-	PERSISTANTWORKSPACES="$3"
-	MONITORNAMES=($4)
+	PERSISTENTWORKSPACES="$3"
+	IFS=, command eval 'MONITORNAMES=($4)'
 fi
 echo ""
 for x in $(seq "$WORKSPACESPERMONITOR"); do
@@ -60,14 +60,14 @@ echo ""
 for x in $(seq 0 "$(( TOTALMONITORS - 1 ))"); do
 	for y in $(seq "$WORKSPACESPERMONITOR"); do
 		default="false"
-		persistant="false"
+		persistent="false"
 		if [ "$y" == 1 ]; then
 			default="true";
 		fi
-		if [ "$y" -le "$PERSISTANTWORKSPACES" ]; then
-			persistant="true"
+		if [ "$y" -le "$PERSISTENTWORKSPACES" ]; then
+			persistent="true"
 		fi
-		echo "workspace = $(( y + x * WORKSPACESPERMONITOR )),monitor:${MONITORNAMES[$x]},default:${default},persistant:${persistant}";
+		echo "workspace = $(( y + x * WORKSPACESPERMONITOR )),monitor:${MONITORNAMES[$x]},default:${default},persistent:${persistent}";
 	done
 	echo ""
 done
