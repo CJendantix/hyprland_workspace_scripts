@@ -1,3 +1,6 @@
+# DEPRICATED DUE TO MIGRATION TO LUA CONFIGS
+You don't need these anymore since you can do computation in the configs now
+
 # CJ's Hyprland workspace scripts
 Scripts to make Hyprland workspaces a little more usable with multiple monitors
 
